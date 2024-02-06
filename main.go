@@ -5,43 +5,39 @@ import (
 	piscine "tests/packages"
 )
 
-func PrintElem(node *piscine.NodeL) {
-	fmt.Println(node.Data)
-}
-
-func StringToInt(node *piscine.NodeL) {
-	node.Data = 2
-}
-
-func PrintList(l *piscine.List) {
-	it := l.Head
+func PrintList(l *piscine.NodeI) {
+	it := l
 	for it != nil {
-		fmt.Print(it.Data, "->")
+		fmt.Print(it.Data, " -> ")
 		it = it.Next
 	}
-	fmt.Print("nil", "\n")
+	fmt.Print(nil, "\n")
+}
+
+func listPushBack(l *piscine.NodeI, data int) *piscine.NodeI {
+	n := &piscine.NodeI{Data: data}
+
+	if l == nil {
+		return n
+	}
+	iterator := l
+	for iterator.Next != nil {
+		iterator = iterator.Next
+	}
+	iterator.Next = n
+	return l
 }
 
 func main() {
-	link := &piscine.List{}
+	var link *piscine.NodeI
+	var link2 *piscine.NodeI
 
-	piscine.ListPushBack(link, 1)
-	piscine.ListPushBack(link, "hello")
-	piscine.ListPushBack(link, 3)
-	piscine.ListPushBack(link, "there")
-	piscine.ListPushBack(link, 23)
-	piscine.ListPushBack(link, "!")
-	piscine.ListPushBack(link, 54)
+	link = listPushBack(link, 3)
+	link = listPushBack(link, 5)
+	link = listPushBack(link, 7)
 
-	PrintList(link)
+	link2 = listPushBack(link2, -2)
+	link2 = listPushBack(link2, 9)
 
-	fmt.Println("--------function applied--------")
-	piscine.ListForEachIf(link, PrintElem, piscine.IsPositiveNode)
-
-	piscine.ListForEachIf(link, StringToInt, piscine.IsAlNode)
-
-	fmt.Println("--------function applied--------")
-	PrintList(link)
-
-	fmt.Println()
+	PrintList(piscine.SortedListMerge(link2, link))
 }
